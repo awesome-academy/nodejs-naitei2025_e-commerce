@@ -1,25 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
-
-const buildProductPayload = (input: Record<string, any>) => ({
-  id: input.id ?? `p-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-  name: input.name ?? '',
-  price: input.price ?? 0,
-  originalprice: input.originalPrice ?? null,
-  category: input.category ?? 'men',
-  subcategory: input.subcategory ?? '',
-  images: input.images ?? [],
-  colors: JSON.stringify(input.colors ?? []),
-  sizes: JSON.stringify(input.sizes ?? []),
-  description: input.description ?? '',
-  features: JSON.stringify(input.features ?? []),
-  isnew: input.isNew ?? false,
-  issale: input.isSale ?? false,
-  rating: input.rating ?? null,
-  reviewcount: input.reviewCount ?? null,
-  stock: input.stock ?? 0,
-  sold_count: input.soldCount ?? 0
-});
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -27,8 +9,8 @@ export class ProductsController {
 
   @Get()
   async getAll() {
-    const data = await this.productsService.getAll();
-    return { success: true, data };
+    const products = await this.productsService.getAll();
+    return { success: true, data: products };
   }
 
   @Get('related')
@@ -37,34 +19,35 @@ export class ProductsController {
     @Query('excludeId') excludeId?: string,
     @Query('limit') limit?: string
   ) {
-    const data = await this.productsService.getRelated(category, excludeId, limit ? Number(limit) : 4);
-    return { success: true, data };
+    const products = await this.productsService.getRelated(
+      category,
+      excludeId,
+      limit ? Number(limit) : 4
+    );
+    return { success: true, data: products };
   }
 
   @Get(':id')
   async getById(@Param('id') id: string) {
-    const data = await this.productsService.getById(id);
-    return { success: true, data };
+    const product = await this.productsService.getById(id);
+    return { success: true, data: product };
   }
 
   @Post()
-  async create(@Body() body: Record<string, any>) {
-    const payload = buildProductPayload(body);
-    const data = await this.productsService.create(payload);
-    return { success: true, data };
+  async create(@Body() dto: CreateProductDto) {
+    const product = await this.productsService.create(dto);
+    return { success: true, data: product };
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() body: Record<string, any>) {
-    const payload = buildProductPayload(body);
-    delete payload.id;
-    const data = await this.productsService.update(id, payload);
-    return { success: true, data };
+  async update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
+    const product = await this.productsService.update(id, dto);
+    return { success: true, data: product };
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
     await this.productsService.delete(id);
-    return { success: true };
+    return { success: true, data: { removed: true } };
   }
 }
