@@ -1,0 +1,1 @@
+'<button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center space-x-2">\n                      <Plus size={16} />\n                      <span>ThÄ‚â€\x9eĂ¢â‚¬Â\x9aÄ‚â€\x9aĂ‚Âªm'

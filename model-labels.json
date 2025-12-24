@@ -1,0 +1,92 @@
+[
+  {
+    "class": 0,
+    "label": "T-shirt/top",
+    "product_id": "men-tshirt-1",
+    "category": "men",
+    "subcategory": "T-shirt",
+    "features": ["cotton", "regular fit", "basic tee", "áo thun", "nam"],
+    "alternatives": ["men-tshirt-2", "men-tshirt-3", "women-tshirt-1", "women-tshirt-2"]
+  },
+  {
+    "class": 1,
+    "label": "Trouser",
+    "product_id": "men-jean-1",
+    "category": "men",
+    "subcategory": "Quần Jean",
+    "features": ["denim", "jeans", "pants", "quần dài", "quần jean"],
+    "alternatives": ["men-jean-2", "men-chino-1", "men-chino-2", "women-jean-1", "women-jean-2"]
+  },
+  {
+    "class": 2,
+    "label": "Pullover",
+    "product_id": "women-cardigan-1",
+    "category": "women",
+    "subcategory": "Cardigan",
+    "features": ["knit", "cardigan", "sweater", "áo len", "layers"],
+    "alternatives": ["women-cardigan-2", "men-polo-1", "men-polo-2"]
+  },
+  {
+    "class": 3,
+    "label": "Dress",
+    "product_id": "women-dress-1",
+    "category": "women",
+    "subcategory": "Váy",
+    "features": ["dress", "skirt", "váy", "đầm", "nữ"],
+    "alternatives": ["women-dress-2", "women-dress-3", "kids-girl-dress-1", "kids-girl-dress-2"]
+  },
+  {
+    "class": 4,
+    "label": "Coat",
+    "product_id": "women-jacket-1",
+    "category": "women",
+    "subcategory": "Áo Khoác",
+    "features": ["coat", "jacket", "blazer", "áo khoác", "outerwear"],
+    "alternatives": ["women-jacket-2", "men-jacket-1", "men-jacket-2", "kids-jacket-1", "kids-jacket-2"]
+  },
+  {
+    "class": 5,
+    "label": "Sandal",
+    "product_id": "women-sandal-1",
+    "category": "women",
+    "subcategory": "Giày",
+    "features": ["sandal", "shoes", "heels", "giày", "dép"],
+    "alternatives": ["men-sneaker-1", "women-boot-1"]
+  },
+  {
+    "class": 6,
+    "label": "Shirt",
+    "product_id": "men-shirt-1",
+    "category": "men",
+    "subcategory": "Áo Sơ Mi",
+    "features": ["shirt", "oxford", "button up", "áo sơ mi", "formal"],
+    "alternatives": ["men-shirt-2", "men-polo-1", "men-polo-2", "women-blouse-1", "women-blouse-2"]
+  },
+  {
+    "class": 7,
+    "label": "Sneaker",
+    "product_id": "men-sneaker-1",
+    "category": "men",
+    "subcategory": "Giày",
+    "features": ["sneaker", "shoes", "casual", "giày thể thao", "running"],
+    "alternatives": ["women-sandal-1", "women-boot-1"]
+  },
+  {
+    "class": 8,
+    "label": "Bag",
+    "product_id": "women-bag-1",
+    "category": "women",
+    "subcategory": "Túi xách",
+    "features": ["bag", "handbag", "purse", "túi xách", "leather"],
+    "alternatives": []
+  },
+  {
+    "class": 9,
+    "label": "Ankle boot",
+    "product_id": "women-boot-1",
+    "category": "women",
+    "subcategory": "Giày",
+    "features": ["boot", "ankle boot", "boots", "giày boot", "fall winter"],
+    "alternatives": ["women-sandal-1", "men-sneaker-1"]
+  }
+]
