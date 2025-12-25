@@ -6,13 +6,12 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 
 @Controller('auth')
-@UseGuards(AuthGuard('jwt'))
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @SkipThrottle()
   @Post('register')
-  @Throttle({ default: { limit: 3, ttl: 60000 } }) // 3 attempts per minute
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() dto: RegisterDto, @Headers() headers: Record<string, string>) {
     const payload = await this.authService.register(dto);
@@ -29,7 +28,7 @@ export class AuthController {
 
   @SkipThrottle()
   @Post('login')
-  @Throttle({ default: { limit: 5, ttl: 60000 } }) // 5 attempts per minute
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginDto, @Headers() headers: Record<string, string>) {
     const payload = await this.authService.login(dto);
@@ -44,6 +43,7 @@ export class AuthController {
     };
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('me')
   async me(@Req() req: any) {
     const profile = await this.authService.getProfile(req.user.userId);
