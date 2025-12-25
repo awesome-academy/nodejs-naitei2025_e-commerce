@@ -297,8 +297,8 @@ export class AdminService {
         note: note ?? null,
         changed_by: actorId ?? null
       });
-    } catch (historyError) {
-      console.error('Failed to insert order status history:', historyError);
+    } catch {
+      // ignore
     }
 
     return data ? mapOrder(data as OrderRow) : null;

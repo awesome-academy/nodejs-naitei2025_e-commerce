@@ -1,13 +1,18 @@
 ﻿import { Injectable } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { OrderItemDto } from './dto/order-item.dto';
+
+interface OrderItemInput {
+  productId: string;
+  productName: string;
+  quantity: number;
+  price: number;
+}
 
 @Injectable()
 export class OrdersService {
   constructor(private readonly supabaseService: SupabaseService) {}
 
-  private async ensureProductsExist(items: OrderItemDto[]) {
+  private async ensureProductsExist(items: OrderItemInput[]) {
     const ids = Array.from(new Set(items.map((item) => item.productId).filter(Boolean)));
     if (!ids.length) return;
 
@@ -40,36 +45,36 @@ export class OrdersService {
     if (insertError) throw insertError;
   }
 
-  async createOrder(dto: CreateOrderDto) {
-    await this.ensureProductsExist(dto.items ?? []);
+  async createOrder(input: any) {
+    await this.ensureProductsExist(input.items ?? []);
 
     const supabase = this.supabaseService.getClient();
     let existingOrder: any = null;
 
-    if (dto.id) {
+    if (input.id) {
       const { data: existing, error: existingError } = await supabase
         .from('orders')
         .select('*')
-        .eq('id', dto.id)
+        .eq('id', input.id)
         .maybeSingle();
       if (existingError) throw existingError;
       existingOrder = existing;
     }
 
-    const resolvedStatus = dto.status ?? existingOrder?.status ?? 'Chờ xử lý';
+    const resolvedStatus = input.status ?? existingOrder?.status ?? 'Chờ xử lý';
 
     const payload = {
-      id: dto.id || existingOrder?.id || undefined,
-      user_id: dto.userId || null,
-      customer_name: dto.customerName,
-      customer_email: dto.customerEmail,
-      customer_phone: dto.customerPhone,
-      shipping_address: dto.shippingAddress,
-      payment_method: dto.paymentMethod ?? existingOrder?.payment_method ?? 'cod',
+      id: input.id || existingOrder?.id || undefined,
+      user_id: input.userId || null,
+      customer_name: input.customerName,
+      customer_email: input.customerEmail,
+      customer_phone: input.customerPhone,
+      shipping_address: input.shippingAddress,
+      payment_method: input.paymentMethod ?? existingOrder?.payment_method ?? 'cod',
       status: resolvedStatus,
-      note: dto.note ?? existingOrder?.note,
-      total: dto.total ?? existingOrder?.total ?? 0,
-      items_count: (dto.items ?? []).reduce((sum, item) => sum + item.quantity, 0),
+      note: input.note ?? existingOrder?.note,
+      total: input.total ?? existingOrder?.total ?? 0,
+      items_count: (input.items ?? []).reduce((sum: number, item: any) => sum + item.quantity, 0),
       date: existingOrder?.date ?? new Date().toISOString(),
       metadata: existingOrder?.metadata ?? {}
     };
@@ -84,7 +89,7 @@ export class OrdersService {
 
     if (!existingOrder) {
       const orderId = orderData.id;
-      const itemsPayload = (dto.items ?? []).map((item) => ({
+      const itemsPayload = (input.items ?? []).map((item: any) => ({
         order_id: orderId,
         product_id: item.productId,
         product_name: item.productName,
@@ -120,8 +125,8 @@ export class OrdersService {
         note: note ?? null,
         changed_by: userId ?? null
       });
-    } catch (historyError) {
-      console.error('Failed to insert order status history:', historyError);
+    } catch {
+      // ignore
     }
 
     return data;
@@ -139,7 +144,7 @@ export class OrdersService {
     return data;
   }
 
-  async fetchOrderHistory(orderId: string) {
+  async getOrderHistory(orderId: string) {
     const supabase = this.supabaseService.getClient();
     const { data, error } = await supabase
       .from('order_status_history')
